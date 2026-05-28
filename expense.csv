@@ -1,0 +1,253 @@
+Timestamp,Purchase Date,Item,Amount,Category
+1/23/2026 1:04:00,1/5/2026,Flat Rent,15500,Rent
+1/23/2026 1:07:56,1/2/2026,electricity bill,341,Bills
+1/23/2026 1:09:24,1/3/2026,Furlenco Rent,1374,Bills
+1/23/2026 1:10:06,1/2/2026,Bed Rent,1023,Bills
+1/23/2026 1:12:03,1/3/2026,CC bill towards Insurance ,43586,Other
+1/23/2026 1:13:12,1/4/2026,jkp maid fees,1800,Bills
+1/23/2026 1:16:29,1/16/2026,Birthday Party,7526,Entertainment
+1/31/2026 19:46:27,2/1/2026,Credit Card Bill,56340,Other
+1/31/2026 19:54:03,2/2/2026,Furlenco Rent,2273,Bills
+1/31/2026 19:55:00,2/4/2026,House Rent,15500,Rent
+1/31/2026 19:56:21,2/3/2026,Electricity Bill,283,Bills
+1/31/2026 23:14:52,2/3/2026,Coat Pant Shirts,6245,Shopping
+1/31/2026 23:25:51,2/2/2026,slippers ,299,Shopping
+2/1/2026 0:19:29,2/2/2026,maggi eggs,259,Groceries
+2/1/2026 2:42:30,2/3/2026,Spotify ,119,Bills
+2/2/2026 15:38:23,2/2/2026,snabbit pass ,175,Bills
+2/2/2026 15:38:38,2/2/2026,petrol ,200,Transport
+2/2/2026 15:39:23,2/2/2026,pickle ball and food,840,Entertainment
+2/2/2026 15:40:10,2/2/2026,kurta and vest,2906,Shopping
+2/3/2026 17:06:30,2/2/2026,sultan meds ,1210,Bills
+2/5/2026 14:38:36,2/5/2026,erickshaw,111,Transport
+2/5/2026 14:39:10,2/4/2026,sultan doctor bill ,600,Bills
+2/5/2026 14:39:55,2/4/2026,cab ,463,Transport
+2/5/2026 20:35:59,2/5/2026,milk,186,Groceries
+2/8/2026 1:10:19,2/6/2026,cab ,259,Transport
+2/8/2026 1:10:56,2/7/2026,Nikita wedding shagun,1100,Gifts
+2/8/2026 1:11:27,2/7/2026,groceries,209,Groceries
+2/9/2026 1:39:12,2/8/2026,chaap,335,Food & Drink
+2/11/2026 15:08:04,2/9/2026,cab ,138,Transport
+2/11/2026 15:08:42,2/10/2026,panneer sandwich ,268,Food & Drink
+2/11/2026 15:09:02,2/11/2026,milk and brush,165,Groceries
+2/13/2026 4:50:21,2/12/2026,aligarh house dinner,685,Food & Drink
+2/13/2026 4:50:45,2/12/2026,auto,120,Transport
+2/13/2026 4:51:15,2/12/2026,screen damage,3500,Other
+2/14/2026 19:03:51,2/13/2026,auto,285,Transport
+2/14/2026 19:04:13,2/13/2026,coffee,100,Food & Drink
+2/15/2026 17:54:56,2/13/2026,auto,165,Transport
+2/15/2026 17:55:44,2/14/2026,auto ,108,Transport
+2/15/2026 17:56:16,2/14/2026,medicine,250,Bills
+2/15/2026 17:56:59,2/14/2026,kettle,550,Groceries
+2/15/2026 18:09:35,2/15/2026,peanut butter bread,442,Groceries
+2/15/2026 19:35:37,2/15/2026,"red mirch, chilli oil ",280,Groceries
+2/16/2026 0:36:17,2/15/2026,cab,314,Transport
+2/16/2026 0:36:38,2/15/2026,pineapple ,60,Food & Drink
+2/16/2026 2:07:26,2/15/2026,"butter, veggies",238,Groceries
+2/16/2026 15:27:21,2/16/2026,auto ,150,Transport
+2/18/2026 1:42:55,2/16/2026,cake,404,Gifts
+2/18/2026 1:43:32,2/16/2026,badminton shoes,1798,Shopping
+2/18/2026 1:45:10,2/17/2026,auto,120,Transport
+2/18/2026 1:45:34,2/17/2026,mcd,1525,Food & Drink
+2/18/2026 1:47:28,2/16/2026,badminton ,418,Entertainment
+2/20/2026 3:52:33,2/18/2026,auto cab,280,Transport
+2/20/2026 3:52:48,2/18/2026,coffee,150,Food & Drink
+2/20/2026 3:57:29,2/19/2026,auto,280,Transport
+2/20/2026 3:57:50,2/19/2026,momos,150,Food & Drink
+2/20/2026 3:59:10,2/14/2026,dinner outside,658,Entertainment
+2/20/2026 3:59:52,2/19/2026,mcd,227,Food & Drink
+2/20/2026 15:48:47,2/20/2026,atta ,381,Groceries
+2/21/2026 15:38:59,2/20/2026,auto,231,Transport
+2/21/2026 15:39:15,2/20/2026,coffee,120,Food & Drink
+2/21/2026 15:39:48,2/20/2026,tiramisu ,368,Food & Drink
+2/21/2026 15:40:29,2/21/2026,garbage man fees,300,Bills
+2/21/2026 16:07:32,2/21/2026,eggs rice ,211,Groceries
+2/21/2026 17:26:27,2/21/2026,auto,83,Transport
+2/22/2026 0:52:52,2/21/2026,auto,57,Transport
+2/22/2026 0:53:08,2/21/2026,pedigree,900,Groceries
+2/22/2026 0:53:26,2/21/2026,cali B,603,Food & Drink
+2/22/2026 1:36:06,2/21/2026,snabbit ,129,Bills
+2/22/2026 2:19:59,2/21/2026,auto,123,Transport
+2/22/2026 3:48:11,2/21/2026,dinner outside,1076,Entertainment
+2/22/2026 19:17:04,2/21/2026,auto,60,Transport
+2/22/2026 19:17:16,2/22/2026,cali B,366,Food & Drink
+2/24/2026 5:06:25,2/23/2026,groceries,112,Groceries
+2/24/2026 5:07:08,2/23/2026,waffle,479,Food & Drink
+2/24/2026 5:08:22,2/23/2026,auto,130,Transport
+2/25/2026 14:54:47,2/25/2026,deo aftershave groceries ,566,Groceries
+2/26/2026 2:28:44,2/25/2026,dinner juice,482,Food & Drink
+3/1/2026 20:27:08,3/1/2026,maid extra fees,150,Gifts
+3/1/2026 20:27:26,2/28/2026,pizza,280,Food & Drink
+3/1/2026 20:27:48,3/1/2026,detergent ,276,Groceries
+3/2/2026 3:06:02,3/1/2026,kfc,690,Food & Drink
+3/2/2026 15:29:00,3/2/2026,auto,110,Transport
+3/2/2026 15:36:13,3/2/2026,rent,15500,Rent
+3/2/2026 15:37:57,3/2/2026,electricity bill,424,Bills
+3/2/2026 15:41:53,3/2/2026,Furlenco Rent,2273,Bills
+3/2/2026 16:38:25,3/2/2026,"eggs face wash, chocolate ",667,Groceries
+3/2/2026 20:23:35,3/2/2026,cali B,654,Food & Drink
+3/3/2026 0:19:37,3/2/2026,cook fees,1666,Bills
+3/3/2026 2:01:50,3/2/2026,auto,56,Transport
+3/4/2026 1:30:26,3/3/2026,tomato groceries ,76,Groceries
+3/4/2026 1:30:39,3/3/2026,coffee,45,Food & Drink
+3/4/2026 15:39:18,3/4/2026,auto,83,Transport
+3/4/2026 17:36:42,3/4/2026,auto,56,Transport
+3/4/2026 17:37:01,3/4/2026,dosa,445,Food & Drink
+3/4/2026 17:56:14,3/4/2026,auto,51,Transport
+3/4/2026 18:57:58,3/4/2026,rapido bike,80,Transport
+3/5/2026 14:57:54,3/5/2026,sanbbit,148,Bills
+3/5/2026 14:58:09,3/4/2026,cab,100,Transport
+3/6/2026 2:10:18,3/5/2026,groceries ,186,Groceries
+3/6/2026 2:10:36,3/5/2026,porter,52,Transport
+3/6/2026 2:12:48,3/4/2026,party at home,1642,Entertainment
+3/7/2026 2:14:47,3/6/2026,tiramisu and subway,655,Food & Drink
+3/7/2026 16:18:37,3/7/2026,auto,59,Transport
+3/7/2026 23:40:19,3/7/2026,groceries ,85,Groceries
+3/7/2026 23:40:41,3/7/2026,auto,59,Transport
+3/8/2026 22:57:21,3/8/2026,coffee,35,Food & Drink
+3/10/2026 0:08:49,3/9/2026,beer ,771,Food & Drink
+3/12/2026 1:37:00,3/10/2026,food,402,Food & Drink
+3/12/2026 1:37:36,3/10/2026,cab,170,Transport
+3/12/2026 1:39:35,3/11/2026,blinkit ,235,Groceries
+3/12/2026 14:23:42,3/12/2026,auto,55,Transport
+3/12/2026 15:22:18,3/12/2026,auto,59,Transport
+3/12/2026 15:24:19,3/12/2026,milk eggs,195,Groceries
+3/13/2026 14:22:55,3/13/2026,auto,56,Transport
+3/13/2026 15:18:01,3/13/2026,auto,55,Transport
+3/13/2026 16:37:49,3/13/2026,milk,27,Groceries
+3/13/2026 16:38:02,3/13/2026,auto,47,Transport
+3/14/2026 4:31:46,3/13/2026,shoes wash,400,Bills
+3/14/2026 4:32:13,3/13/2026,paneer,177,Groceries
+3/14/2026 19:39:26,3/14/2026,camera charger ,704,Shopping
+3/14/2026 19:39:41,3/12/2026,momos,210,Food & Drink
+3/15/2026 3:04:22,3/14/2026,auto,147,Transport
+3/15/2026 4:50:19,3/14/2026,auto,197,Transport
+3/15/2026 4:50:32,3/14/2026,microbrewry,810,Entertainment
+3/15/2026 19:31:39,3/15/2026,auto,109,Transport
+3/15/2026 20:38:52,3/15/2026,auto,47,Transport
+3/15/2026 20:39:42,3/15/2026,brunch at breakfast club,1070,Entertainment
+3/15/2026 23:07:07,3/15/2026,auto,111,Transport
+3/15/2026 23:43:35,3/15/2026,earrings,532,Shopping
+3/16/2026 0:43:05,3/15/2026,maggi groceries ,594,Groceries
+3/16/2026 14:37:54,3/16/2026,auto,56,Transport
+3/16/2026 15:47:51,3/16/2026,auto,65,Transport
+3/16/2026 15:48:04,3/16/2026,milk,27,Groceries
+3/17/2026 1:47:38,3/16/2026,chocolate and juice,235,Food & Drink
+3/17/2026 1:48:10,3/16/2026,"Veggies,paneer",77,Groceries
+3/17/2026 2:09:56,3/3/2026,jio bill,825,Bills
+3/17/2026 15:24:27,3/17/2026,auto,111,Transport
+3/18/2026 4:29:13,3/17/2026,dosa and coffee,270,Food & Drink
+3/18/2026 4:29:38,3/17/2026,auto,125,Transport
+3/18/2026 4:29:58,3/15/2026,mystery room tickets,700,Entertainment
+3/18/2026 14:57:23,3/18/2026,"milk, shaving blades",354,Groceries
+3/18/2026 17:01:34,3/18/2026,aito,48,Transport
+3/19/2026 16:28:41,3/19/2026,snabbit,135,Bills
+3/19/2026 16:29:32,3/19/2026,wifi ups,605,Shopping
+3/19/2026 22:47:22,3/19/2026,food,475,Food & Drink
+3/20/2026 15:59:25,3/20/2026,led,240,Shopping
+3/20/2026 18:58:13,3/20/2026,auto,178,Transport
+3/22/2026 0:38:30,3/21/2026,cab,527,Transport
+3/22/2026 0:39:01,3/21/2026,water cookie ,101,Food & Drink
+3/22/2026 0:39:38,3/21/2026,Food trek,650,Entertainment
+3/22/2026 0:40:47,3/21/2026,scooty fuel ,540,Entertainment
+3/22/2026 0:41:13,3/20/2026,jeans,2990,Shopping
+3/22/2026 0:42:24,3/20/2026,hole in wall cafe,282,Entertainment
+3/22/2026 2:14:03,3/21/2026,rapido,47,Transport
+3/25/2026 15:57:45,3/22/2026,auto,67,Transport
+3/25/2026 15:58:00,3/22/2026,mango shake,220,Food & Drink
+3/25/2026 15:58:33,3/23/2026,auto,50,Transport
+3/25/2026 15:58:54,3/24/2026,mcd,300,Food & Drink
+3/25/2026 15:59:08,3/24/2026,garbage fees,250,Bills
+3/25/2026 15:59:36,3/24/2026,auto,55,Transport
+3/25/2026 15:59:51,3/24/2026,food party ,822,Entertainment
+3/25/2026 16:00:17,3/24/2026,cali b party ,1045,Entertainment
+3/25/2026 16:01:38,3/22/2026,teatings,688,Food & Drink
+3/25/2026 16:01:59,3/22/2026,pedigree ,1045,Bills
+3/26/2026 2:29:10,3/25/2026,veggies,47,Groceries
+3/26/2026 18:33:31,3/26/2026,food,268,Food & Drink
+3/26/2026 23:09:07,3/26/2026,vrat food,238,Food & Drink
+3/27/2026 14:18:44,3/27/2026,curtains ,1016,Shopping
+3/27/2026 23:55:40,4/1/2026,electricity bill ,560,Bills
+3/27/2026 23:56:02,3/27/2026,mcd,168,Food & Drink
+3/28/2026 4:34:23,3/27/2026,auto,51,Transport
+3/28/2026 4:34:43,3/27/2026,tshirts ,1090,Shopping
+3/28/2026 18:16:53,3/28/2026,soap,433,Groceries
+3/29/2026 2:42:16,3/28/2026,auto,54,Transport
+3/29/2026 2:42:55,3/28/2026,Spotify ,119,Bills
+3/29/2026 2:43:18,3/28/2026,food nandas,433,Food & Drink
+3/29/2026 2:43:40,3/28/2026,coffee milk,284,Groceries
+3/29/2026 18:15:21,3/29/2026,"shampoo,eggs, chocolate ",826,Groceries
+3/29/2026 22:29:11,3/29/2026,belt ,400,Shopping
+3/31/2026 2:01:52,4/1/2026,furlenco rent,2273,Bills
+3/31/2026 2:03:06,4/1/2026,cook fees,1833,Bills
+3/31/2026 2:09:37,4/1/2026,mobile recharge ,666,Bills
+3/31/2026 14:37:54,4/1/2026,house rent,15500,Rent
+3/31/2026 14:52:16,4/1/2026,"palak, paneer & lotion ",357,Groceries
+4/1/2026 16:51:50,4/1/2026,"atta, eggs milk",313,Groceries
+4/1/2026 20:25:52,4/1/2026,swish,407,Food & Drink
+4/1/2026 20:26:33,4/1/2026,Pixel 10a,42006,Other
+4/3/2026 2:32:28,4/2/2026,aito,120,Transport
+4/3/2026 2:32:47,4/2/2026,brownie ,399,Food & Drink
+4/6/2026 0:51:41,4/3/2026,Snabbit,160,Bills
+4/6/2026 0:54:39,4/2/2026,Cali B,962,Entertainment
+4/6/2026 0:57:04,4/3/2026,swish,709,Food & Drink
+4/6/2026 0:57:51,4/4/2026,bk,351,Entertainment
+4/8/2026 4:27:14,4/3/2026,Party,920,Entertainment
+4/8/2026 4:28:33,4/5/2026,Auto,62,Transport
+4/8/2026 4:30:16,4/5/2026,Din er,369,Food & Drink
+4/8/2026 4:30:55,4/6/2026,Movies,502,Entertainment
+4/8/2026 4:31:33,4/7/2026,Groceries,231,Groceries
+4/8/2026 4:32:05,4/7/2026,Mr diy,299,Shopping
+4/8/2026 4:32:54,4/8/2026,Burger King ,832,Food & Drink
+4/8/2026 4:34:14,4/7/2026,Autos,201,Transport
+4/8/2026 4:35:57,4/7/2026,Phone cover temper,470,Shopping
+4/8/2026 4:36:27,4/7/2026,Auto,133,Transport
+4/8/2026 4:36:58,4/8/2026,Taxi ,333,Transport
+4/8/2026 4:37:19,4/8/2026,Water,65,Food & Drink
+4/8/2026 18:57:36,4/8/2026,Juice ,250,Food & Drink
+4/10/2026 0:03:43,4/9/2026,Auto,74,Transport
+4/10/2026 3:53:07,4/8/2026,Auto,111,Transport
+4/10/2026 3:53:32,4/9/2026,Coffee,120,Food & Drink
+4/10/2026 3:55:48,4/9/2026,Coke and veggies ,569,Groceries
+4/10/2026 15:53:37,4/10/2026,Auto,54,Transport
+4/10/2026 18:30:13,4/10/2026,Juice,185,Food & Drink
+4/11/2026 0:04:08,4/10/2026,Auto,85,Transport
+4/11/2026 0:06:12,4/10/2026,Snabbit,85,Bills
+4/11/2026 2:18:04,4/10/2026,Wall putty ,278,Shopping
+4/11/2026 5:41:16,4/10/2026,Auto,254,Transport
+4/11/2026 5:42:08,4/10/2026,Pickle ball ,480,Entertainment
+4/11/2026 22:02:58,4/11/2026,Chicken roll,198,Food & Drink
+4/12/2026 2:48:38,4/11/2026,Auto,207,Transport
+4/12/2026 5:02:26,4/12/2026,Auto,256,Transport
+4/12/2026 5:02:46,4/12/2026,Sundae,180,Food & Drink
+4/12/2026 5:03:13,4/12/2026,Hakuna matata dinner,854,Entertainment
+4/12/2026 5:12:47,4/12/2026,Bday gift ,1000,Shopping
+4/12/2026 22:41:04,4/12/2026,Auto,60,Transport
+4/13/2026 15:14:50,4/12/2026,Snabbit,85,Bills
+4/13/2026 15:15:49,4/12/2026,Food,164,Food & Drink
+4/13/2026 15:16:41,4/12/2026,Cabs auto,500,Transport
+4/13/2026 15:18:09,4/12/2026,Haircut,271,Groceries
+4/13/2026 15:19:27,4/12/2026,Food,376,Food & Drink
+4/13/2026 17:11:48,4/13/2026,Auto,46,Transport
+4/13/2026 19:26:46,4/13/2026,Flights ,16236,Other
+4/13/2026 19:41:43,4/13/2026,Cabs,210,Transport
+4/14/2026 0:35:13,4/13/2026,Veggies,82,Groceries
+4/14/2026 23:22:53,4/14/2026,Auto ,80,Transport
+4/15/2026 3:00:58,4/14/2026,Cali B,347,Food & Drink
+4/15/2026 3:07:19,4/14/2026,Auto,104,Transport
+4/15/2026 4:41:12,4/14/2026,Bk,400,Food & Drink
+4/15/2026 4:41:31,4/14/2026,Mango shake,100,Food & Drink
+4/15/2026 4:43:33,4/13/2026,Breakfast ,726,Entertainment
+4/15/2026 15:21:56,4/15/2026,Auto,57,Transport
+4/16/2026 3:10:53,4/15/2026,Auto,124,Transport
+4/16/2026 3:11:03,4/15/2026,Juice,100,Food & Drink
+4/16/2026 5:28:30,4/15/2026,Swish,364,Food & Drink
+4/18/2026 19:04:33,4/18/2026,Groceries ,348,Groceries
+4/18/2026 22:04:38,4/17/2026,Auto ,360,Transport
+4/18/2026 22:07:06,4/16/2026,Party,2226,Entertainment
+4/19/2026 22:32:48,4/18/2026,Transport ,700,Transport
+4/19/2026 22:33:07,4/19/2026,Mr diy,560,Groceries
+4/19/2026 22:34:11,4/18/2026,Karoke night,3547,Entertainment
+4/19/2026 22:38:24,4/19/2026,Milk and detergent ,247,Groceries
+4/19/2026 23:03:29,4/19/2026,Pedigree ,1025,Groceries
+4/20/2026 1:22:18,4/19/2026,Dominos,357,Food & Drink

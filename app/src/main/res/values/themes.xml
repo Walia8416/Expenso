@@ -1,0 +1,24 @@
+<resources>
+    <!-- Base application theme. Compose applies its own Material 3 theme in code. -->
+    <style name="Theme.Expenso" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">@color/expenso_background</item>
+    </style>
+
+    <!--
+      Transparent variant used by UpiMediatorActivity. The mediator is a
+      trampoline: it draws only a ModalBottomSheet on top of a transparent
+      window so we don't flash the Expenso background at the caller.
+    -->
+    <style name="Theme.Expenso.Transparent" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="log_upi"
+        android:enabled="true"
+        android:icon="@drawable/ic_log_upi"
+        android:shortcutShortLabel="@string/shortcut_log_upi_short"
+        android:shortcutLongLabel="@string/shortcut_log_upi_long">
+        <intent
+            android:action="com.expenso.app.ACTION_LOG_UPI"
+            android:targetPackage="com.expenso.app"
+            android:targetClass="com.expenso.app.MainActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+</shortcuts>

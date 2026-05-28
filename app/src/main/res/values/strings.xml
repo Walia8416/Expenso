@@ -1,0 +1,94 @@
+<resources>
+    <string name="app_name">Expenso</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_1_title">Pay first, tag first.</string>
+    <string name="onboarding_1_body">Scan any UPI QR, pick a category in one tap, then pay with your favourite UPI app.</string>
+    <string name="onboarding_2_title">No SMS. No snooping.</string>
+    <string name="onboarding_2_body">Your data never leaves the phone. No bank parsing, no notification listening.</string>
+    <string name="onboarding_3_title">Built for real checkouts.</string>
+    <string name="onboarding_3_body">From QR to payment in under four seconds. One-handed, thumb-friendly, fast.</string>
+    <string name="onboarding_cta_next">Next</string>
+    <string name="onboarding_cta_done">Get started</string>
+
+    <!-- Permissions -->
+    <string name="camera_permission_title">Camera access</string>
+    <string name="camera_permission_rationale">Expenso needs the camera to scan UPI QR codes. It is used only while you are on the scanner screen.</string>
+    <string name="camera_permission_grant">Allow camera</string>
+    <string name="camera_permission_denied">Camera permission required. You can enable it later from Settings.</string>
+
+    <!-- Nav -->
+    <string name="tab_pay">Pay</string>
+    <string name="tab_history">History</string>
+    <string name="tab_insights">Insights</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Scanner -->
+    <string name="scanner_hint">Point at any UPI QR</string>
+    <string name="scanner_manual">Enter manually</string>
+
+    <!-- Pay sheet -->
+    <string name="pay_amount">Amount</string>
+    <string name="pay_note_hint">Note (optional)</string>
+    <string name="pay_vpa_label">Paying to</string>
+    <string name="pay_category">Category</string>
+    <string name="pay_cta">Pay with %1$s</string>
+    <string name="pay_cta_generic">Pay</string>
+    <string name="pay_change_app">Change app</string>
+    <string name="pay_manual_vpa_hint">VPA or phone number</string>
+
+    <!-- Confirm -->
+    <string name="confirm_title">Did the payment go through?</string>
+    <string name="confirm_paid">Yes, paid</string>
+    <string name="confirm_failed">Failed</string>
+    <string name="confirm_later">Not sure, later</string>
+
+    <!-- History -->
+    <string name="history_empty">No expenses yet. Scan a UPI QR to log your first one.</string>
+    <string name="history_pending_pill">%1$d pending — review</string>
+    <string name="history_today">Today</string>
+    <string name="history_yesterday">Yesterday</string>
+
+    <!-- Insights -->
+    <string name="insights_title">Insights</string>
+    <string name="insights_total">Total spent</string>
+    <string name="insights_category">By category</string>
+    <string name="insights_merchants">Top merchants</string>
+
+    <!-- Settings -->
+    <string name="settings_default_upi">Default UPI app</string>
+    <string name="settings_categories">Categories</string>
+    <string name="settings_about">About Expenso</string>
+    <string name="settings_privacy">Your data stays on this device.</string>
+
+    <!-- Misc -->
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_retry">Try again</string>
+
+    <!-- Widget -->
+    <string name="widget_description">Scan &amp; Pay · Log cash</string>
+    <string name="widget_scan_title">Scan</string>
+    <string name="widget_scan_subtitle">and pay</string>
+    <string name="widget_cash_title">Log</string>
+    <string name="widget_cash_subtitle">cash / card</string>
+
+    <!-- UPI mediator -->
+    <string name="upi_mediator_label">Track with Expenso</string>
+    <string name="upi_invalid_request">That UPI link doesn\'t look valid.</string>
+    <string name="upi_no_apps_title">No UPI app installed</string>
+    <string name="upi_no_apps_body">Install Google Pay, PhonePe, Paytm or BHIM to complete the payment.</string>
+    <string name="upi_no_apps_close">Close</string>
+    <string name="upi_default_prompt_title">Always track UPI payments?</string>
+    <string name="upi_default_prompt_body">Android can show Expenso in the chooser every time. Tap \"Open supported links\" and enable \"UPI\" on the next screen.</string>
+    <string name="upi_default_prompt_action">Open app settings</string>
+    <string name="upi_default_prompt_later">Not now</string>
+
+    <!-- Manual logging fallback for merchant-pinned UPI flows -->
+    <string name="log_upi_tile_label">Log UPI payment</string>
+    <string name="shortcut_log_upi_short">Log UPI</string>
+    <string name="shortcut_log_upi_long">Log a UPI payment</string>
+    <string name="upi_assist_service_desc">Helps detect merchant to UPI app hand-offs and shows a quick Expenso logging prompt.</string>
+</resources>

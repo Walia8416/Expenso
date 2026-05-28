@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
+    <!--
+      Android 11+ package visibility: we need to resolve the UPI intent for
+      all installed UPI apps. We declare an intent filter + the known
+      package names of popular UPI apps in India.
+    -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="upi" />
+        </intent>
+
+        <package android:name="com.google.android.apps.nbu.paisa.user" />
+        <package android:name="com.phonepe.app" />
+        <package android:name="com.phonepe.app.preprod" />
+        <package android:name="net.one97.paytm" />
+        <package android:name="in.org.npci.upiapp" />
+        <package android:name="in.amazon.mShop.android.shopping" />
+        <package android:name="com.amazon.mShop.android.shopping" />
+        <package android:name="com.whatsapp" />
+        <package android:name="com.csam.icici.bank.imobile" />
+        <package android:name="com.axis.mobile" />
+        <package android:name="com.sbi.SBIFreedomPlus" />
+        <package android:name="com.snapwork.hdfc" />
+        <package android:name="com.fss.pnb" />
+        <package android:name="com.mobikwik_new" />
+        <package android:name="com.freecharge.android" />
+    </queries>
+
+    <application
+        android:name=".ExpensoApp"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Expenso"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Expenso"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.expenso.app.ACTION_WIDGET_SCAN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.expenso.app.ACTION_WIDGET_CASH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <!--
+              Manual UPI logging fallback for merchant-pinned payment flows
+              (e.g. checkouts that setPackage(...) a specific PSP). Invoked by
+              the launcher shortcut and the Quick Settings tile.
+            -->
+            <intent-filter>
+                <action android:name="com.expenso.app.ACTION_LOG_UPI" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+
+        <!--
+          Dedicated trampoline so Expenso shows up as "Track with Expenso" in
+          the Android UPI chooser instead of the launcher label. Parses the
+          `upi://pay?...` URI, writes a pending expense + payment_intent row,
+          then hands off to the real PSP app the user picks. Lives in its
+          own task (taskAffinity="") so finishing it returns the user to the
+          caller, not to Expenso's main task.
+        -->
+        <activity
+            android:name=".feature.upi.UpiMediatorActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            android:label="@string/upi_mediator_label"
+            android:theme="@style/Theme.Expenso.Transparent"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter android:label="@string/upi_mediator_label">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="upi" android:host="pay" />
+            </intent-filter>
+            <intent-filter android:label="@string/upi_mediator_label">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="upi" android:host="mandate" />
+            </intent-filter>
+            <intent-filter android:label="@string/upi_mediator_label">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="upi" />
+            </intent-filter>
+            <!-- Browser / app share of a UPI deeplink as plain text. -->
+            <intent-filter android:label="@string/upi_mediator_label">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
+        <!-- Quick Settings tile for manual "Log UPI payment". -->
+        <service
+            android:name=".feature.upi.LogUpiPaymentTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_log_upi"
+            android:label="@string/log_upi_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".feature.upiassist.UpiAssistAccessibilityService"
+            android:enabled="true"
+            android:exported="false"
+            android:label="@string/log_upi_tile_label"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/upi_assist_accessibility_service" />
+        </service>
+
+        <receiver
+            android:name=".feature.widget.ExpensoWidgetReceiver"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/expenso_widget_info" />
+        </receiver>
+
+    </application>
+
+</manifest>
