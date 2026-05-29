@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -30,23 +31,36 @@ fun StatCard(
     subtitle: String? = null,
     trendPct: Float? = null,
     accent: Color = MaterialTheme.colorScheme.primary,
+    gradient: Brush? = null,
     modifier: Modifier = Modifier,
 ) {
+    val onVariant = MaterialTheme.colorScheme.onSurfaceVariant
+    val titleColor = if (gradient != null) Color.White.copy(alpha = 0.85f) else onVariant
+    val valueColor = if (gradient != null) Color.White else accent
+    val subtitleColor = if (gradient != null) Color.White.copy(alpha = 0.75f) else onVariant
     Column(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(20.dp))
+            .background(
+                gradient ?: Brush.linearGradient(
+                    listOf(
+                        MaterialTheme.colorScheme.surface,
+                        MaterialTheme.colorScheme.surface,
+                    )
+                ),
+                RoundedCornerShape(20.dp),
+            )
             .padding(horizontal = 16.dp, vertical = 14.dp),
     ) {
         Text(
             title,
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = titleColor,
         )
         Spacer(Modifier.height(4.dp))
         Text(
             value,
             style = MaterialTheme.typography.titleLarge,
-            color = accent,
+            color = valueColor,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
@@ -79,7 +93,7 @@ fun StatCard(
             Text(
                 subtitle,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = subtitleColor,
             )
         }
     }

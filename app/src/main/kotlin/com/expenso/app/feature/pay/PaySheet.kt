@@ -18,8 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Warning
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -39,8 +37,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.expenso.app.core.domain.model.Category
+import com.expenso.app.core.domain.upi.UpiIntentBuilder
 import com.expenso.app.core.domain.upi.UpiPaymentRequest
 import com.expenso.app.core.ui.components.CategoryChip
+import com.expenso.app.core.ui.components.GlassButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,6 +73,7 @@ fun PaySheet(
                             uri = ev.intentUri,
                             targetPackage = ev.targetPackage,
                             expenseId = ev.expenseId,
+                            qrSource = ev.qrSource,
                         )
                     )
                     onLaunched(ev.expenseId)
@@ -104,6 +105,7 @@ data class LaunchPayload(
     val uri: String,
     val targetPackage: String?,
     val expenseId: String,
+    val qrSource: UpiIntentBuilder.QrSource? = null,
 )
 
 @Composable
@@ -249,17 +251,10 @@ internal fun PaySheetContent(
         Spacer(Modifier.height(20.dp))
 
         val chosenApp = state.installedUpiApps.firstOrNull { it.packageName == state.chosenUpiPackage }
-        Button(
+        GlassButton(
             onClick = onPayClicked,
             enabled = state.amountRupeesInput.isNotBlank() && state.vpaInput.isNotBlank(),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp),
-            shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-            ),
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
                 text = if (chosenApp != null) "Pay with ${chosenApp.displayName}" else "Pay",

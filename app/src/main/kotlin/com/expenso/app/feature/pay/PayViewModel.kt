@@ -47,6 +47,7 @@ sealed interface PayEvent {
         val intentUri: String,
         val targetPackage: String?,
         val expenseId: String,
+        val qrSource: UpiIntentBuilder.QrSource? = null,
     ) : PayEvent
 
     data class Error(val message: String) : PayEvent
@@ -163,19 +164,25 @@ class PayViewModel @Inject constructor(
             )
 
             val original = originalRequest
-            val uri = if (st.isSignedQr && original != null && original.rawParams.isNotEmpty()) {
-                // Signed merchant QR: reconstruct the URI from the exact params we
-                // received so the merchant's signature stays verifiable. Only the
-                // user-picked amount is layered on when the original QR omitted it.
-                UpiIntentBuilder.buildUri(
-                    payeeVpa = vpa,
-                    payeeName = original.payeeName,
-                    amountRupees = amountRupees.takeIf { !original.rawParams.containsKey("am") },
-                    note = null,
-                    transactionRef = "",
-                    extraParams = original.rawParams,
-                    preserveSignedPayload = true,
-                )
+            val signedRaw = original?.sourceRawUri?.takeIf { st.isSignedQr }
+            val uri = if (signedRaw != null) {
+                // Signed merchant QR. Never decode and rebuild — that breaks the
+                // merchant signature (Uri.Builder re-encodes `+`/%20, hex case,
+                // reserved chars). Launch the source bytes verbatim. If the
+                // original QR had no `am` (variable-amount sticker) and the
+                // user entered one, append it as a raw string suffix so signed
+                // bytes stay intact.
+                if (original.amountRupees == null) {
+                    Uri.parse(
+                        UpiIntentBuilder.appendAmountToRawUri(
+                            sourceRawUri = signedRaw,
+                            amountRupees = amountRupees,
+                            currency = original.currency,
+                        )
+                    )
+                } else {
+                    Uri.parse(signedRaw)
+                }
             } else if (shouldLaunchOriginalUri(st, original, amountRupees)) {
                 Uri.parse(original!!.sourceRawUri)
             } else {
@@ -207,14 +214,26 @@ class PayViewModel @Inject constructor(
             if (!original?.sourceRawUri.isNullOrBlank()) {
                 val source = redactForLog(original?.sourceRawUri.orEmpty())
                 val outgoing = redactForLog(uri.toString())
-                Timber.d("UPI source=%s outgoing=%s", source, outgoing)
+                val bytesEqual = original?.sourceRawUri == uri.toString()
+                Timber.d(
+                    "UPI source=%s outgoing=%s signed=%b bytes_equal=%b",
+                    source,
+                    outgoing,
+                    original?.isSigned == true,
+                    bytesEqual,
+                )
             }
             Timber.d("Launching UPI: $uri target=${st.chosenUpiPackage}")
+            val qrSource = when (st.source) {
+                ExpenseSource.QR_SCAN -> UpiIntentBuilder.QrSource.LIVE_CAMERA
+                else -> null
+            }
             _events.emit(
                 PayEvent.LaunchUpi(
                     intentUri = uri.toString(),
                     targetPackage = st.chosenUpiPackage,
                     expenseId = expenseId,
+                    qrSource = qrSource,
                 )
             )
         }

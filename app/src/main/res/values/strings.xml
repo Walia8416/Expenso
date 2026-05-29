@@ -70,6 +70,7 @@
 
     <!-- Widget -->
     <string name="widget_description">Scan &amp; Pay · Log cash</string>
+    <string name="widget_quick_log_description">Quick Log — one tap to a fresh expense</string>
     <string name="widget_scan_title">Scan</string>
     <string name="widget_scan_subtitle">and pay</string>
     <string name="widget_cash_title">Log</string>

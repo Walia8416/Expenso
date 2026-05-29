@@ -7,4 +7,4 @@
     android:description="@string/upi_assist_service_desc"
     android:notificationTimeout="100"
     android:settingsActivity=""
-    android:packageNames="in.swiggy.android,com.zeptoconsumerapp,com.google.android.apps.nbu.paisa.user,com.phonepe.app,net.one97.paytm,in.org.npci.upiapp,com.amazon.mShop.android.shopping" />
+    android:packageNames="com.google.android.apps.nbu.paisa.user,com.phonepe.app,net.one97.paytm,in.org.npci.upiapp,com.amazon.mShop.android.shopping" />

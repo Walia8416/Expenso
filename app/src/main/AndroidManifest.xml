@@ -82,6 +82,16 @@
                 <action android:name="com.expenso.app.ACTION_LOG_UPI" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            <!-- 1x1 Quick Log widget tile. -->
+            <intent-filter>
+                <action android:name="com.expenso.app.ACTION_WIDGET_QUICK_LOG" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <!-- GPay-open / "Log this UPI payment?" notification. -->
+            <intent-filter>
+                <action android:name="com.expenso.app.ACTION_OPEN_QUICK_LOG" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
 
             <meta-data
                 android:name="android.app.shortcuts"
@@ -167,6 +177,19 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/expenso_widget_info" />
+        </receiver>
+
+        <!-- 1x1 launcher tile that jumps straight into Quick Log. -->
+        <receiver
+            android:name=".feature.widget.QuickLogWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_quick_log_description">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/quick_log_widget_info" />
         </receiver>
 
     </application>

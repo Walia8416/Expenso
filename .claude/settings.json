@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(JAVA_HOME=/opt/homebrew/opt/openjdk@17 ./gradlew :app:assembleDebug :app:testDebugUnitTest --no-daemon)"
+    ]
+  }
+}

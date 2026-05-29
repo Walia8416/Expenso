@@ -129,6 +129,7 @@ private fun MediatorContent(
                             val intent = UpiIntentBuilder.buildIntent(
                                 uri = Uri.parse(payload.uri),
                                 targetPackage = payload.targetPackage,
+                                qrSource = payload.qrSource,
                             )
                             context.startActivity(intent)
                         } catch (e: ActivityNotFoundException) {

@@ -17,12 +17,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DateRangePicker
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,7 +45,12 @@ import com.expenso.app.core.domain.model.Income
 import com.expenso.app.core.domain.model.PaymentMethod
 import com.expenso.app.core.domain.model.PaymentStatus
 import com.expenso.app.core.ui.components.LottieLoop
+import com.expenso.app.core.ui.components.formatDayDdMmm
 import com.expenso.app.core.ui.components.formatInr
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 
 private val incomeColor = Color(0xFF14B886)
 
@@ -61,7 +74,10 @@ fun HistoryScreen(
 
         FilterRow(
             filter = state.filter,
+            dateRange = state.dateRange,
             onSelect = vm::setFilter,
+            onSetRange = vm::setDateRange,
+            onClearRange = vm::clearDateRange,
         )
 
         if (state.groups.isEmpty()) {
@@ -150,8 +166,17 @@ private fun DayHeader(group: DayGroup) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun FilterRow(filter: HistoryFilter, onSelect: (HistoryFilter) -> Unit) {
+private fun FilterRow(
+    filter: HistoryFilter,
+    dateRange: DateRange?,
+    onSelect: (HistoryFilter) -> Unit,
+    onSetRange: (Long, Long) -> Unit,
+    onClearRange: () -> Unit,
+) {
+    var showPicker by remember { mutableStateOf(false) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -177,8 +202,63 @@ private fun FilterRow(filter: HistoryFilter, onSelect: (HistoryFilter) -> Unit) 
                 selectedLabelColor = incomeColor,
             ),
         )
+        val dateLabel = dateRange?.let {
+            "${formatDayDdMmm(it.startMs)} → ${formatDayDdMmm(it.endMs)}"
+        } ?: "Date"
+        FilterChip(
+            selected = dateRange != null,
+            onClick = {
+                if (dateRange != null) onClearRange() else showPicker = true
+            },
+            label = { Text(dateLabel) },
+        )
+    }
+
+    if (showPicker) {
+        val zone = ZoneId.systemDefault()
+        val initialStart = dateRange?.startMs?.toUtcMidnight(zone)
+        val initialEnd = dateRange?.endMs?.toUtcMidnight(zone)
+        val pickerState = rememberDateRangePickerState(
+            initialSelectedStartDateMillis = initialStart,
+            initialSelectedEndDateMillis = initialEnd,
+        )
+        DatePickerDialog(
+            onDismissRequest = { showPicker = false },
+            confirmButton = {
+                TextButton(
+                    enabled = pickerState.selectedStartDateMillis != null &&
+                        pickerState.selectedEndDateMillis != null,
+                    onClick = {
+                        val startUtc = pickerState.selectedStartDateMillis
+                        val endUtc = pickerState.selectedEndDateMillis
+                        if (startUtc != null && endUtc != null) {
+                            val startDay = utcMillisToLocalDate(startUtc)
+                            val endDay = utcMillisToLocalDate(endUtc)
+                            val startMs = startDay.atStartOfDay(zone).toInstant().toEpochMilli()
+                            val endMs = endDay.plusDays(1).atStartOfDay(zone)
+                                .toInstant().toEpochMilli() - 1
+                            onSetRange(startMs, endMs)
+                        }
+                        showPicker = false
+                    }
+                ) { Text("Apply") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showPicker = false }) { Text("Cancel") }
+            },
+        ) {
+            DateRangePicker(state = pickerState)
+        }
     }
 }
+
+private fun Long.toUtcMidnight(zone: ZoneId): Long {
+    val date = Instant.ofEpochMilli(this).atZone(zone).toLocalDate()
+    return date.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+}
+
+private fun utcMillisToLocalDate(utcMs: Long): LocalDate =
+    Instant.ofEpochMilli(utcMs).atZone(ZoneOffset.UTC).toLocalDate()
 
 @Composable
 private fun TopSummary(

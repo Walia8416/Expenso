@@ -42,14 +42,16 @@ class MainActivity : ComponentActivity() {
     }
 
     /**
-     * Routes the two widget actions and the manual-log UPI shortcut / QS tile
-     * onto the in-app entry points. `ACTION_LOG_UPI` intentionally opens the
-     * Add Expense sheet on the UPI tab so users can capture payments that
-     * were pinned directly to a PSP app and bypassed Expenso's mediator.
+     * Routes widget shortcuts, the QS tile, and the GPay-open notification
+     * onto in-app entry points. Quick-log entries land on Home with the
+     * amount field focused; ACTION_LOG_UPI additionally presets the
+     * payment-method picker to UPI for merchant-pinned payment recovery.
      */
     private fun widgetActionFromIntent(intent: Intent?): WidgetAction? = when (intent?.action) {
         ACTION_WIDGET_SCAN -> WidgetAction.ScanAndPay
         ACTION_WIDGET_CASH -> WidgetAction.LogCash
+        ACTION_WIDGET_QUICK_LOG -> WidgetAction.QuickLog
+        ACTION_OPEN_QUICK_LOG -> WidgetAction.QuickLog
         ACTION_LOG_UPI -> WidgetAction.LogUpi
         else -> null
     }
@@ -57,6 +59,8 @@ class MainActivity : ComponentActivity() {
     companion object {
         const val ACTION_WIDGET_SCAN = "com.expenso.app.ACTION_WIDGET_SCAN"
         const val ACTION_WIDGET_CASH = "com.expenso.app.ACTION_WIDGET_CASH"
+        const val ACTION_WIDGET_QUICK_LOG = "com.expenso.app.ACTION_WIDGET_QUICK_LOG"
+        const val ACTION_OPEN_QUICK_LOG = "com.expenso.app.ACTION_OPEN_QUICK_LOG"
         const val ACTION_LOG_UPI = "com.expenso.app.ACTION_LOG_UPI"
     }
 }

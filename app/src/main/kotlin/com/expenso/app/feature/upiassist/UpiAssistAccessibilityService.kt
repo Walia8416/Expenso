@@ -7,7 +7,6 @@ import android.view.accessibility.AccessibilityEvent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.expenso.app.ExpensoApp
 import com.expenso.app.MainActivity
@@ -25,8 +24,6 @@ private val android.content.Context.assistStore by preferencesDataStore(name = "
 class UpiAssistAccessibilityService : AccessibilityService() {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    private var lastMerchantPkg: String? = null
-    private var lastMerchantAt: Long = 0L
     private var lastPromptAt: Long = 0L
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
@@ -36,20 +33,15 @@ class UpiAssistAccessibilityService : AccessibilityService() {
         ) return
         val pkg = event.packageName?.toString().orEmpty()
         if (pkg.isBlank()) return
+        if (pkg !in PSP_PACKAGES) return
 
         val now = System.currentTimeMillis()
-        if (pkg in MERCHANT_PACKAGES) {
-            lastMerchantPkg = pkg
-            lastMerchantAt = now
-            return
-        }
-        if (pkg in PSP_PACKAGES && now - lastMerchantAt <= MERCHANT_TO_PSP_WINDOW_MS) {
-            scope.launch {
-                if (!isAssistEnabled()) return@launch
-                if (now - lastPromptAt < PROMPT_COOLDOWN_MS) return@launch
-                lastPromptAt = now
-                showPrompt(lastMerchantPkg.orEmpty(), pkg)
-            }
+        if (now - lastPromptAt < PROMPT_COOLDOWN_MS) return
+        lastPromptAt = now
+
+        scope.launch {
+            if (!isAssistEnabled()) return@launch
+            showPrompt(pkg)
         }
     }
 
@@ -63,9 +55,9 @@ class UpiAssistAccessibilityService : AccessibilityService() {
         }.getOrDefault(false)
     }
 
-    private fun showPrompt(fromMerchant: String, psp: String) {
+    private fun showPrompt(psp: String) {
         val openIntent = Intent(this, MainActivity::class.java).apply {
-            action = MainActivity.ACTION_LOG_UPI
+            action = MainActivity.ACTION_OPEN_QUICK_LOG
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
         val pendingOpen = PendingIntent.getActivity(
@@ -74,13 +66,14 @@ class UpiAssistAccessibilityService : AccessibilityService() {
             openIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
-        val title = "Track this UPI payment in Expenso"
-        val text = "Detected switch ${shortName(fromMerchant)} -> ${shortName(psp)}"
         val notification = NotificationCompat.Builder(this, ExpensoApp.CHANNEL_RECONCILIATION)
             .setSmallIcon(R.drawable.ic_log_upi)
-            .setContentTitle(title)
-            .setContentText(text)
-            .setStyle(NotificationCompat.BigTextStyle().bigText("$text. Tap to open UPI log sheet."))
+            .setContentTitle("Log this UPI payment?")
+            .setContentText("Tap to open Quick Log in Expenso")
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText("Detected ${shortName(psp)} in the foreground. Tap to capture the amount in Quick Log.")
+            )
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setContentIntent(pendingOpen)
@@ -94,21 +87,14 @@ class UpiAssistAccessibilityService : AccessibilityService() {
         pkg.substringAfterLast('.').ifBlank { pkg }
 
     companion object {
-        private const val MERCHANT_TO_PSP_WINDOW_MS = 75_000L
-        private const val PROMPT_COOLDOWN_MS = 30_000L
+        private const val PROMPT_COOLDOWN_MS = 60_000L
         private val KEY_UPI_ASSIST = booleanPreferencesKey("upi_assist_enabled")
-        private val MERCHANT_PACKAGES = setOf(
-            "in.swiggy.android",
-            "com.zeptoconsumerapp",
-            "com.flipkart.android",
-            "com.phonepe.app.business",
-        )
         private val PSP_PACKAGES = setOf(
-            "com.google.android.apps.nbu.paisa.user",
-            "com.phonepe.app",
-            "net.one97.paytm",
-            "in.org.npci.upiapp",
-            "com.amazon.mShop.android.shopping",
+            "com.google.android.apps.nbu.paisa.user", // GPay
+            "com.phonepe.app",                         // PhonePe
+            "net.one97.paytm",                         // Paytm
+            "in.org.npci.upiapp",                      // BHIM
+            "com.amazon.mShop.android.shopping",       // Amazon (Amazon Pay UPI)
         )
     }
 }

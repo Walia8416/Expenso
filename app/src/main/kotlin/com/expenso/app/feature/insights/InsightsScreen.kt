@@ -41,7 +41,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -49,8 +48,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.expenso.app.R
 import com.expenso.app.core.data.db.dao.MerchantTotal
+import com.expenso.app.core.ui.components.AnimatedDeltaBadge
+import com.expenso.app.core.ui.components.GradientCard
 import com.expenso.app.core.ui.components.LottieLoop
 import com.expenso.app.core.ui.components.formatInrCompact
+import com.expenso.app.core.ui.theme.ExpensoBrushes
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -194,14 +196,9 @@ fun InsightsScreen(vm: InsightsViewModel = hiltViewModel()) {
                             onSelect = vm::setLifestyleFilter,
                         )
                         Spacer(Modifier.height(12.dp))
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(
-                                    MaterialTheme.colorScheme.surface,
-                                    RoundedCornerShape(20.dp),
-                                )
-                                .padding(14.dp),
+                        GradientCard(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentPadding = PaddingValues(14.dp),
                         ) {
                             StackedBarChart(
                                 points = state.stackedPoints,
@@ -265,20 +262,19 @@ fun InsightsScreen(vm: InsightsViewModel = hiltViewModel()) {
                         Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                             SectionTitle("Category breakdown")
                             Spacer(Modifier.height(10.dp))
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(
-                                        MaterialTheme.colorScheme.surface,
-                                        RoundedCornerShape(20.dp),
-                                    )
-                                    .padding(16.dp),
-                                contentAlignment = Alignment.Center,
+                            GradientCard(
+                                modifier = Modifier.fillMaxWidth(),
+                                contentPadding = PaddingValues(16.dp),
                             ) {
-                                CategoryDonut(
-                                    slices = state.categorySlices,
-                                    totalMinor = state.totalMinor,
-                                )
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    CategoryDonut(
+                                        slices = state.categorySlices,
+                                        totalMinor = state.totalMinor,
+                                    )
+                                }
                             }
                         }
                     }
@@ -587,16 +583,10 @@ private fun HeroCard(
     deltaPct: Float,
     period: InsightsPeriod,
 ) {
-    val brush = Brush.linearGradient(
-        listOf(
-            MaterialTheme.colorScheme.primary,
-            MaterialTheme.colorScheme.tertiary,
-        )
-    )
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(brush)
+            .background(ExpensoBrushes.gradPrimary)
             .padding(horizontal = 20.dp, vertical = 28.dp),
     ) {
         Text(
@@ -611,21 +601,20 @@ private fun HeroCard(
             color = Color.White,
             compact = total >= 100_000_00L,
         )
-        Spacer(Modifier.height(6.dp))
-        val deltaText = when {
-            deltaPct > 1f -> "\u25B2 ${"%.0f".format(deltaPct)}% vs previous"
-            deltaPct < -1f -> "\u25BC ${"%.0f".format(-deltaPct)}% vs previous"
-            else -> "About the same as previous"
+        Spacer(Modifier.height(10.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            AnimatedDeltaBadge(
+                deltaPercent = deltaPct,
+                positiveIsGood = false,
+            )
+            Spacer(Modifier.size(8.dp))
+            Text(
+                "vs previous",
+                style = MaterialTheme.typography.labelMedium,
+                color = Color.White.copy(alpha = 0.85f),
+            )
         }
-        Text(
-            deltaText,
-            style = MaterialTheme.typography.labelLarge,
-            color = Color.White,
-            modifier = Modifier
-                .background(Color.Black.copy(alpha = 0.15f), RoundedCornerShape(100))
-                .padding(horizontal = 12.dp, vertical = 6.dp),
-        )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(6.dp))
         Text(
             label,
             style = MaterialTheme.typography.labelMedium,
@@ -646,7 +635,7 @@ private fun KpiRow(state: InsightsUiState) {
             title = "Daily avg",
             value = formatInrCompact(state.dailyAvgMinor),
             subtitle = "${state.daysElapsed} days",
-            accent = MaterialTheme.colorScheme.primary,
+            gradient = ExpensoBrushes.gradPrimary,
             modifier = Modifier.weight(1f),
         )
         StatCard(
@@ -655,14 +644,14 @@ private fun KpiRow(state: InsightsUiState) {
             subtitle = if (state.topCategory != null)
                 "Top: ${state.topCategory.category.emoji} ${state.topCategory.category.name}"
             else null,
-            accent = MaterialTheme.colorScheme.tertiary,
+            gradient = ExpensoBrushes.gradCool,
             modifier = Modifier.weight(1f),
         )
         StatCard(
             title = "Biggest",
             value = formatInrCompact(state.biggestTxnMinor),
             subtitle = "single txn",
-            accent = MaterialTheme.colorScheme.secondary,
+            gradient = ExpensoBrushes.gradWarm,
             modifier = Modifier.weight(1f),
         )
     }

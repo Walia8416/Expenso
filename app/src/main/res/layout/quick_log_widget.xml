@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/quick_log_widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_quick_log_widget"
+    android:padding="6dp"
+    android:contentDescription="@string/widget_quick_log_description">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_log_upi"
+        android:tint="#FFFFFF"
+        android:importantForAccessibility="no" />
+</FrameLayout>

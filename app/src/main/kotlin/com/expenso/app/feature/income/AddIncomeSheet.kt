@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.expenso.app.R
+import com.expenso.app.core.ui.components.DatePillRow
 import com.expenso.app.core.ui.components.LottieOneShot
 
 @Composable
@@ -133,6 +134,14 @@ fun AddIncomeSheet(
                     }
                 }
             }
+
+            Spacer(Modifier.height(16.dp))
+
+            Spacer(Modifier.height(8.dp))
+            DatePillRow(
+                epochMs = state.createdAt,
+                onDateChange = vm::setCreatedAt,
+            )
 
             Spacer(Modifier.height(16.dp))
 

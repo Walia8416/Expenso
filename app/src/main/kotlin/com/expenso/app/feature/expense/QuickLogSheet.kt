@@ -44,13 +44,15 @@ import com.expenso.app.R
 import com.expenso.app.core.domain.model.Category
 import com.expenso.app.core.domain.model.PaymentMethod
 import com.expenso.app.core.ui.components.CategoryChip
+import com.expenso.app.core.ui.components.DatePillRow
 import com.expenso.app.core.ui.components.LottieOneShot
 
 /**
  * Compact single-screen expense logger. Unlike [AddExpenseSheet] / [LogExpenseSheet]
- * there are no tabs, no merchant field, no note — just amount / method / category /
- * save. Designed to be opened from a secondary FAB on the scanner screen so
- * users can capture an out-of-band UPI / cash / card payment in < 5 seconds.
+ * there are no tabs and no merchant field — just amount / method / category /
+ * optional note / save. Designed to be opened from a secondary FAB on the
+ * scanner screen so users can capture an out-of-band UPI / cash / card
+ * payment in < 5 seconds.
  *
  * Reuses [LogExpenseViewModel] so saves land in exactly the same repository
  * path as the full flow (pending-status handling, import/export, etc.).
@@ -138,6 +140,12 @@ fun QuickLogSheet(
                 QuickMethodPicker(method = state.method, onSelect = vm::setMethod)
 
                 Spacer(Modifier.height(16.dp))
+                DatePillRow(
+                    epochMs = state.createdAt,
+                    onDateChange = vm::setCreatedAt,
+                )
+
+                Spacer(Modifier.height(16.dp))
                 Text(
                     "Category",
                     style = MaterialTheme.typography.labelMedium,
@@ -157,6 +165,19 @@ fun QuickLogSheet(
                         )
                     }
                 }
+
+                Spacer(Modifier.height(16.dp))
+                OutlinedTextField(
+                    value = state.noteInput,
+                    onValueChange = vm::setNote,
+                    placeholder = { Text("Note (optional)") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surface,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                )
 
                 Spacer(Modifier.height(20.dp))
 

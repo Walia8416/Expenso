@@ -18,20 +18,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Bolt
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -47,7 +41,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.expenso.app.R
 import com.expenso.app.core.domain.upi.UpiIntentBuilder
 import com.expenso.app.core.ui.components.LottieLoop
-import com.expenso.app.feature.expense.AddExpenseSheet
 import com.expenso.app.feature.pay.ConfirmPaymentSheet
 import com.expenso.app.feature.pay.PaySheet
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -59,8 +52,6 @@ import timber.log.Timber
 @Composable
 fun ScannerScreen(
     onOpenSettings: () -> Unit,
-    openAddSheetTab: Int? = null,
-    onAddSheetTabConsumed: () -> Unit = {},
     vm: ScannerViewModel = hiltViewModel(),
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
@@ -76,13 +67,6 @@ fun ScannerScreen(
         }
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-    }
-
-    LaunchedEffect(openAddSheetTab) {
-        openAddSheetTab?.let {
-            vm.openAddSheet(it)
-            onAddSheetTabConsumed()
-        }
     }
 
     Box(Modifier.fillMaxSize()) {
@@ -126,31 +110,11 @@ fun ScannerScreen(
                     .background(Color.Black.copy(alpha = 0.5f), RoundedCornerShape(100))
                     .padding(horizontal = 16.dp, vertical = 8.dp),
             )
-            Spacer(Modifier.height(12.dp))
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                SmallFloatingActionButton(
-                    onClick = { vm.openQuickLog() },
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                ) {
-                    Icon(Icons.Rounded.Bolt, contentDescription = "Quick log")
-                }
-                ExtendedFloatingActionButton(
-                    onClick = { vm.openAddSheet(0) },
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    icon = { Icon(Icons.Rounded.Add, contentDescription = null) },
-                    text = { Text("Add expense") },
-                )
-            }
         }
     }
 
     val request = state.pendingRequest
-    if (request != null && !state.showAddSheet) {
+    if (request != null) {
         PaySheet(
             request = request,
             categories = state.categories,
@@ -163,64 +127,13 @@ fun ScannerScreen(
                     val intent = UpiIntentBuilder.buildIntent(
                         uri = Uri.parse(payload.uri),
                         targetPackage = payload.targetPackage,
+                        qrSource = payload.qrSource,
                     )
                     context.startActivity(intent)
                 } catch (e: ActivityNotFoundException) {
                     Timber.w(e, "No UPI app resolved for intent")
                 }
             },
-        )
-    }
-
-    if (state.showAddSheet) {
-        val manualRequest = remember {
-            com.expenso.app.core.domain.upi.UpiPaymentRequest(
-                payeeVpa = "",
-                payeeName = null,
-                amountRupees = null,
-                currency = "INR",
-                transactionNote = null,
-                transactionRef = null,
-                merchantCode = null,
-                url = null,
-                isSigned = false,
-                rawParams = emptyMap(),
-            )
-        }
-        AddExpenseSheet(
-            manualRequest = manualRequest,
-            categories = state.categories,
-            lastUsedCategoryId = state.lastUsedCategoryId,
-            selectedTabIndex = state.addSheetTabIndex,
-            onSelectTab = vm::selectAddSheetTab,
-            onDismiss = vm::dismissAddSheet,
-            onLaunchUpi = { payload ->
-                try {
-                    val intent = UpiIntentBuilder.buildIntent(
-                        uri = Uri.parse(payload.uri),
-                        targetPackage = payload.targetPackage,
-                    )
-                    context.startActivity(intent)
-                } catch (e: ActivityNotFoundException) {
-                    Timber.w(e, "No UPI app resolved for intent")
-                }
-            },
-            onLaunched = { expenseId ->
-                vm.setPendingExpenseId(expenseId)
-                vm.dismissAddSheet()
-            },
-            onCashSaved = { vm.dismissAddSheet() },
-            onIncomeSaved = { vm.dismissAddSheet() },
-            onError = { Timber.w("Add sheet error: $it") },
-        )
-    }
-
-    if (state.showQuickLog) {
-        com.expenso.app.feature.expense.QuickLogSheet(
-            categories = state.categories,
-            lastUsedCategoryId = state.lastUsedCategoryId,
-            onDismiss = { vm.dismissQuickLog() },
-            onSaved = { vm.dismissQuickLog() },
         )
     }
 

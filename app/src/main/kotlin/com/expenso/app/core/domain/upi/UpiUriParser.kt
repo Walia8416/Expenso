@@ -64,6 +64,12 @@ object UpiUriParser {
         if (!VPA_REGEX.matches(pa)) {
             return UpiParseResult.Failure("Invalid VPA format: $pa")
         }
+        // Bank handle (right of `@`) is case-insensitive per NPCI but several
+        // PSPs (HDFC/ICICI strict gateways) reject mixed-case handles after
+        // PIN entry. Normalize so the parsed VPA is always safe to send to a
+        // UPI app. `rawParams` keeps the original-cased value so signed
+        // merchant QRs still verify byte-for-byte.
+        val normalizedVpa = normalizeBankHandle(pa)
 
         val amount = params["am"]?.let { runCatching { BigDecimal(it) }.getOrNull() }
         if (amount != null && amount.signum() < 0) {
@@ -74,7 +80,7 @@ object UpiUriParser {
 
         return UpiParseResult.Success(
             UpiPaymentRequest(
-                payeeVpa = pa,
+                payeeVpa = normalizedVpa,
                 payeeName = params["pn"]?.sanitize(),
                 amountRupees = amount,
                 currency = currency,
@@ -117,5 +123,14 @@ object UpiUriParser {
 
     private fun String.sanitize(): String {
         return this.replace(Regex("[\\p{Cntrl}]"), "").trim()
+    }
+
+    private fun normalizeBankHandle(vpa: String): String {
+        // NPCI treats VPA as case-insensitive. Several PSPs (HDFC/ICICI strict
+        // gateways) reject mixed-case VPAs after PIN entry, surfacing as
+        // "Invalid UPI ID" in GPay. Lowercasing the full VPA is the safest
+        // normalization for non-signed paths. Signed-merchant flows preserve
+        // the original case via rawParams + verbatim sourceRawUri launch.
+        return vpa.lowercase()
     }
 }

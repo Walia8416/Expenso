@@ -20,8 +20,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.expenso.app.core.domain.model.PaymentMethod
 import com.expenso.app.feature.history.ExpenseDetailScreen
 import com.expenso.app.feature.history.HistoryScreen
+import com.expenso.app.feature.home.HomeBootstrap
+import com.expenso.app.feature.home.HomeScreen
 import com.expenso.app.feature.insights.InsightsScreen
 import com.expenso.app.feature.onboarding.OnboardingScreen
 import com.expenso.app.feature.scanner.ScannerScreen
@@ -32,6 +35,7 @@ enum class WidgetAction {
     ScanAndPay,
     LogCash,
     LogUpi,
+    QuickLog,
 }
 
 @Composable
@@ -69,31 +73,37 @@ private fun MainShell(
     widgetAction: WidgetAction?,
     onWidgetActionConsumed: () -> Unit,
 ) {
-    var scannerOpenTab by remember { mutableStateOf<Int?>(null) }
+    var homeBootstrap by remember { mutableStateOf<HomeBootstrap?>(null) }
 
     LaunchedEffect(widgetAction) {
         when (widgetAction) {
             WidgetAction.ScanAndPay -> {
                 navController.navigate(Routes.SCANNER) {
-                    popUpTo(Routes.SCANNER) { inclusive = true }
+                    popUpTo(Routes.HOME) { saveState = true }
                     launchSingleTop = true
                 }
                 onWidgetActionConsumed()
             }
             WidgetAction.LogCash -> {
-                scannerOpenTab = com.expenso.app.feature.expense.TAB_CASH_CARD
-                navController.navigate(Routes.SCANNER) {
-                    popUpTo(Routes.SCANNER) { inclusive = true }
+                homeBootstrap = HomeBootstrap(presetMethod = PaymentMethod.CASH, focusAmount = true)
+                navController.navigate(Routes.HOME) {
+                    popUpTo(Routes.HOME) { inclusive = true }
                     launchSingleTop = true
                 }
                 onWidgetActionConsumed()
             }
             WidgetAction.LogUpi -> {
-                // Entry point for the "Log UPI payment" shortcut / QS tile:
-                // jump straight to the UPI manual-entry tab of the add sheet.
-                scannerOpenTab = com.expenso.app.feature.expense.TAB_UPI_MANUAL
-                navController.navigate(Routes.SCANNER) {
-                    popUpTo(Routes.SCANNER) { inclusive = true }
+                homeBootstrap = HomeBootstrap(presetMethod = PaymentMethod.UPI, focusAmount = true)
+                navController.navigate(Routes.HOME) {
+                    popUpTo(Routes.HOME) { inclusive = true }
+                    launchSingleTop = true
+                }
+                onWidgetActionConsumed()
+            }
+            WidgetAction.QuickLog -> {
+                homeBootstrap = HomeBootstrap(focusAmount = true)
+                navController.navigate(Routes.HOME) {
+                    popUpTo(Routes.HOME) { inclusive = true }
                     launchSingleTop = true
                 }
                 onWidgetActionConsumed()
@@ -107,14 +117,20 @@ private fun MainShell(
     ) { padding ->
         NavHost(
             navController = navController,
-            startDestination = Routes.SCANNER,
+            startDestination = Routes.HOME,
             modifier = Modifier.padding(padding),
         ) {
+            composable(Routes.HOME) {
+                HomeScreen(
+                    onOpenScanner = { navController.navigate(Routes.SCANNER) },
+                    onOpenSettings = { navController.navigate(Routes.SETTINGS) },
+                    homeBootstrap = homeBootstrap,
+                    onBootstrapConsumed = { homeBootstrap = null },
+                )
+            }
             composable(Routes.SCANNER) {
                 ScannerScreen(
                     onOpenSettings = { navController.navigate(Routes.SETTINGS) },
-                    openAddSheetTab = scannerOpenTab,
-                    onAddSheetTabConsumed = { scannerOpenTab = null },
                 )
             }
             composable(Routes.HISTORY) {

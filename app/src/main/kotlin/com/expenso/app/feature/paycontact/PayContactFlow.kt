@@ -93,6 +93,7 @@ fun PayContactFlow(
                             uri = ev.intentUri,
                             targetPackage = ev.targetPackage,
                             expenseId = ev.expenseId,
+                            qrSource = ev.qrSource,
                         ),
                     )
                     onLaunched(ev.expenseId)

@@ -7,6 +7,7 @@ import com.expenso.app.core.data.repository.IncomeRepository
 import com.expenso.app.core.domain.model.Expense
 import com.expenso.app.core.domain.model.Income
 import com.expenso.app.core.domain.model.PaymentStatus
+import com.expenso.app.core.ui.components.formatDayDdMmmYyyy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Instant
 import java.time.LocalDate
@@ -20,6 +21,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 enum class HistoryFilter { ALL, EXPENSES, INCOME }
+
+/** Inclusive start, inclusive end-day (end-of-day local). */
+data class DateRange(val startMs: Long, val endMs: Long)
 
 sealed interface HistoryItem {
     val id: String
@@ -38,6 +42,7 @@ sealed interface HistoryItem {
 
 data class HistoryUiState(
     val filter: HistoryFilter = HistoryFilter.ALL,
+    val dateRange: DateRange? = null,
     val groups: List<DayGroup> = emptyList(),
     val pendingCount: Int = 0,
     val todayTotalMinor: Long = 0L,
@@ -59,16 +64,19 @@ class HistoryViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _filter = MutableStateFlow(HistoryFilter.ALL)
+    private val _dateRange = MutableStateFlow<DateRange?>(null)
 
     val state: StateFlow<HistoryUiState> = combine(
         expenseRepository.observeAll(),
         expenseRepository.observePending(),
         incomeRepository.observeAll(),
         _filter,
-    ) { expenses, pending, incomes, filter ->
+        _dateRange,
+    ) { expenses, pending, incomes, filter, range ->
         HistoryUiState(
             filter = filter,
-            groups = groupByDay(expenses, incomes, filter),
+            dateRange = range,
+            groups = groupByDay(expenses, incomes, filter, range),
             pendingCount = pending.size,
             todayTotalMinor = todayTotal(expenses),
             todayIncomeMinor = todayIncome(incomes),
@@ -77,6 +85,14 @@ class HistoryViewModel @Inject constructor(
 
     fun setFilter(filter: HistoryFilter) {
         _filter.value = filter
+    }
+
+    fun setDateRange(startMs: Long, endMs: Long) {
+        _dateRange.value = DateRange(startMs, endMs)
+    }
+
+    fun clearDateRange() {
+        _dateRange.value = null
     }
 
     fun softDelete(id: String) {
@@ -101,12 +117,15 @@ class HistoryViewModel @Inject constructor(
         expenses: List<Expense>,
         incomes: List<Income>,
         filter: HistoryFilter,
+        range: DateRange?,
     ): List<DayGroup> {
         val zone = ZoneId.systemDefault()
         val today = LocalDate.now(zone)
 
-        val filteredExpenses = if (filter == HistoryFilter.INCOME) emptyList() else expenses
-        val filteredIncomes = if (filter == HistoryFilter.EXPENSES) emptyList() else incomes
+        val filteredExpenses = (if (filter == HistoryFilter.INCOME) emptyList() else expenses)
+            .filter { range == null || (it.createdAt in range.startMs..range.endMs) }
+        val filteredIncomes = (if (filter == HistoryFilter.EXPENSES) emptyList() else incomes)
+            .filter { range == null || (it.createdAt in range.startMs..range.endMs) }
 
         val items = filteredExpenses.map { HistoryItem.ExpenseItem(it) as HistoryItem } +
             filteredIncomes.map { HistoryItem.IncomeItem(it) as HistoryItem }
@@ -158,6 +177,6 @@ class HistoryViewModel @Inject constructor(
     private fun dayLabel(date: LocalDate, today: LocalDate): String = when (date) {
         today -> "Today"
         today.minusDays(1) -> "Yesterday"
-        else -> date.toString()
+        else -> formatDayDdMmmYyyy(date)
     }
 }

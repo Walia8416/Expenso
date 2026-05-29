@@ -2,7 +2,7 @@ package com.expenso.app.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Analytics
-import androidx.compose.material.icons.rounded.QrCodeScanner
+import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Receipt
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
@@ -26,7 +27,7 @@ private data class NavItem(
 @Composable
 fun ExpensoBottomBar(navController: NavHostController) {
     val items = listOf(
-        NavItem(Routes.SCANNER, "Pay", Icons.Rounded.QrCodeScanner),
+        NavItem(Routes.HOME, "Home", Icons.Rounded.Home),
         NavItem(Routes.HISTORY, "History", Icons.Rounded.Receipt),
         NavItem(Routes.INSIGHTS, "Insights", Icons.Rounded.Analytics),
     )
@@ -43,12 +44,16 @@ fun ExpensoBottomBar(navController: NavHostController) {
             NavigationBarItem(
                 selected = selected,
                 onClick = {
-                    if (!selected) {
-                        navController.navigate(item.route) {
-                            popUpTo(Routes.SCANNER) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
+                    navController.navigate(item.route) {
+                        // Canonical Compose-Navigation pattern: pop everything
+                        // up to the start destination so the back stack stays
+                        // flat across tab swaps, and restore each tab's saved
+                        // state.
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
                         }
+                        launchSingleTop = true
+                        restoreState = true
                     }
                 },
                 icon = { Icon(item.icon, contentDescription = item.label) },
